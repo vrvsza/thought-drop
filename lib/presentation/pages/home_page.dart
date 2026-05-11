@@ -22,52 +22,81 @@ class HomePage extends ConsumerWidget {
           ProfilePage(),
         ],
       ),
+      // Floating dark navigation dock
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          border: Border(
-            top: BorderSide(color: AppColors.divider, width: 0.5),
+        margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+        child: Container(
+          height: 68,
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(34),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: 20,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _NavItem(
-                  icon: Icons.home_outlined,
-                  activeIcon: Icons.home,
-                  label: 'Home',
-                  isSelected: currentIndex == 0,
-                  onTap: () => ref.read(_currentIndexProvider.notifier).state = 0,
-                ),
-                _NavItem(
-                  icon: Icons.person_outline,
-                  activeIcon: Icons.person,
-                  label: 'Profile',
-                  isSelected: currentIndex == 1,
-                  onTap: () => ref.read(_currentIndexProvider.notifier).state = 1,
-                ),
-              ],
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _NavItem(
+                icon: Icons.home_outlined,
+                activeIcon: Icons.home,
+                label: 'Home',
+                isSelected: currentIndex == 0,
+                onTap: () => ref.read(_currentIndexProvider.notifier).state = 0,
+              ),
+              _NavItem(
+                icon: Icons.search_outlined,
+                label: 'Explore',
+                isSelected: currentIndex == 1,
+                onTap: () {},
+              ),
+              const SizedBox(width: 56), // Space for centered button
+              _NavItem(
+                icon: Icons.person_outline,
+                activeIcon: Icons.person,
+                label: 'Profile',
+                isSelected: currentIndex == 2,
+                onTap: () => ref.read(_currentIndexProvider.notifier).state = 2,
+              ),
+              _NavItem(
+                icon: Icons.more_horiz,
+                label: 'More',
+                isSelected: false,
+                onTap: () {},
+              ),
+            ],
           ),
         ),
       ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: AppColors.accent,
+          elevation: 0,
+          shape: const CircleBorder(),
+          child: Icon(Icons.add, color: AppColors.textPrimary, size: 28),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
 
 class _NavItem extends StatelessWidget {
   final IconData icon;
-  final IconData activeIcon;
+  final IconData? activeIcon;
   final String label;
   final bool isSelected;
   final VoidCallback onTap;
 
   const _NavItem({
     required this.icon,
-    required this.activeIcon,
+    this.activeIcon,
     required this.label,
     required this.isSelected,
     required this.onTap,
@@ -80,31 +109,11 @@ class _NavItem extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.accent.withOpacity(0.15) : Colors.transparent,
-          borderRadius: BorderRadius.circular(24),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              isSelected ? activeIcon : icon,
-              size: 22,
-              color: isSelected ? AppColors.accent : AppColors.textTertiary,
-            ),
-            if (isSelected) ...[
-              const SizedBox(width: 8),
-              Text(
-                label,
-                style: TextStyle(
-                  color: AppColors.accent,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ],
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Icon(
+          isSelected ? (activeIcon ?? icon) : icon,
+          size: 24,
+          color: isSelected ? AppColors.accent : AppColors.textTertiary,
         ),
       ),
     );

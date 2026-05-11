@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // 🌙 DARK MODE THEME - Premium Minimalist Design
+// True dark theme for ThoughtDrop - calm, immersive, premium
 
 class AppColors {
   AppColors._();
