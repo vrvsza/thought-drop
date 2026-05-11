@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// 🌙 DARK MODE THEME - Premium Minimalist Design
+
 class AppColors {
   AppColors._();
 
