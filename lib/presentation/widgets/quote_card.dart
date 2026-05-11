@@ -22,30 +22,40 @@ class QuoteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(28),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 22),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header: Username and timestamp
             Row(
               children: [
-                // Avatar placeholder
-                CircleAvatar(
-                  radius: 16,
-                  backgroundColor: AppColors.surfaceVariant,
-                  child: Text(
-                    (quote.username ?? '?')[0].toUpperCase(),
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textSecondary,
+                // Avatar placeholder - subtle dark circle
+                Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: AppColors.surfaceVariant,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Center(
+                    child: Text(
+                      (quote.username ?? '?')[0].toUpperCase(),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,43 +63,57 @@ class QuoteCard extends StatelessWidget {
                       Text(
                         quote.username ?? 'Anonymous',
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.textSecondary,
                         ),
                       ),
+                      const SizedBox(height: 2),
                       Text(
                         app_date.DateUtils.formatRelativeTime(quote.createdAt),
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           color: AppColors.textTertiary,
                         ),
                       ),
                     ],
                   ),
                 ),
-                if (showActions) ...[
+                if (showActions)
                   PopupMenuButton<String>(
-                    icon: const Icon(Icons.more_horiz, size: 20),
+                    icon: Icon(
+                      Icons.more_horiz, 
+                      size: 20,
+                      color: AppColors.textTertiary,
+                    ),
+                    color: AppColors.surfaceElevated,
                     onSelected: (value) {
                       if (value == 'edit') onEdit?.call();
                       if (value == 'delete') onDelete?.call();
                     },
                     itemBuilder: (context) => [
-                      const PopupMenuItem(value: 'edit', child: Text('Edit')),
-                      const PopupMenuItem(value: 'delete', child: Text('Delete')),
+                      PopupMenuItem(
+                        value: 'edit', 
+                        child: Text('Edit', style: TextStyle(color: AppColors.textPrimary)),
+                      ),
+                      PopupMenuItem(
+                        value: 'delete', 
+                        child: Text('Delete', style: TextStyle(color: AppColors.error)),
+                      ),
                     ],
                   ),
-                ],
               ],
             ),
-            const SizedBox(height: 12),
-            // Quote content
+            const SizedBox(height: 20),
+            // Quote content - larger, more readable
             Text(
               quote.content,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                height: 1.6,
-                letterSpacing: 0.2,
+                fontSize: 17,
+                height: 1.65,
+                letterSpacing: 0.15,
+                color: AppColors.textPrimary,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
             // Actions row: Like button
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -104,7 +128,7 @@ class QuoteCard extends StatelessWidget {
           ],
         ),
       ),
-    ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.05, end: 0, duration: 300.ms);
+    ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.02, end: 0, duration: 400.ms);
   }
 }
 
@@ -121,33 +145,41 @@ class _LikeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: isLiked ? AppColors.likeActive.withOpacity(0.1) : Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+        ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               isLiked ? Icons.favorite : Icons.favorite_border,
-              size: 20,
+              size: 18,
               color: isLiked ? AppColors.likeActive : AppColors.textTertiary,
             ).animate(target: isLiked ? 1 : 0).scale(
               begin: const Offset(1, 1),
-              end: const Offset(1.2, 1.2),
+              end: const Offset(1.15, 1.15),
               duration: 150.ms,
             ).then().scale(
-              begin: const Offset(1.2, 1.2),
+              begin: const Offset(1.15, 1.15),
               end: const Offset(1, 1),
               duration: 150.ms,
             ),
-            const SizedBox(width: 4),
-            Text(
-              likesCount > 0 ? '$likesCount' : '',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: isLiked ? AppColors.likeActive : AppColors.textTertiary,
+            if (likesCount > 0) ...[
+              const SizedBox(width: 6),
+              Text(
+                '$likesCount',
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: isLiked ? AppColors.likeActive : AppColors.textTertiary,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
+            ],
           ],
         ),
       ),

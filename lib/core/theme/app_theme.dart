@@ -4,19 +4,32 @@ import 'package:google_fonts/google_fonts.dart';
 class AppColors {
   AppColors._();
 
-  static const Color textPrimary = Color(0xFF2D2D2D);
-  static const Color textSecondary = Color(0xFF6B6B6B);
-  static const Color textTertiary = Color(0xFF9E9E9E);
-  static const Color background = Color(0xFFFAFAFA);
-  static const Color surface = Color(0xFFFFFFFF);
-  static const Color surfaceVariant = Color(0xFFF5F5F5);
-  static const Color accent = Color(0xFF7D9D7D);
-  static const Color accentLight = Color(0xFFA8C2A8);
-  static const Color likeActive = Color(0xFFE57373);
-  static const Color error = Color(0xFFE57373);
-  static const Color success = Color(0xFF81C784);
-  static const Color divider = Color(0xFFE0E0E0);
-  static const Color shadow = Color(0x1A000000);
+  // Primary dark backgrounds
+  static const Color background = Color(0xFF050505);
+  static const Color backgroundSecondary = Color(0xFF0B0B0B);
+  
+  // Card surfaces - subtle difference from background
+  static const Color surface = Color(0xFF111111);
+  static const Color surfaceVariant = Color(0xFF151515);
+  static const Color surfaceElevated = Color(0xFF1A1A1A);
+  
+  // Accent - muted soft green
+  static const Color accent = Color(0xFF6B8B6B);
+  static const Color accentMuted = Color(0xFF5A745A);
+  
+  // Like color
+  static const Color likeActive = Color(0xFFE57B7B);
+  
+  // Text - high contrast white
+  static const Color textPrimary = Color(0xFFF5F5F5);
+  static const Color textSecondary = Color(0xFF9A9A9A);
+  static const Color textTertiary = Color(0xFF666666);
+  
+  // Utility
+  static const Color error = Color(0xFFE57B7B);
+  static const Color success = Color(0xFF6B9B6B);
+  static const Color divider = Color(0xFF1F1F1F);
+  static const Color shadow = Color(0x33000000);
 }
 
 class AppTheme {
@@ -25,23 +38,23 @@ class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
       scaffoldBackgroundColor: AppColors.background,
-      colorScheme: const ColorScheme.light(
+      colorScheme: const ColorScheme.dark(
         primary: AppColors.accent,
-        secondary: AppColors.accentLight,
+        secondary: AppColors.accentMuted,
         surface: AppColors.surface,
         error: AppColors.error,
-        onPrimary: Colors.white,
+        onPrimary: AppColors.textPrimary,
         onSecondary: AppColors.textPrimary,
         onSurface: AppColors.textPrimary,
-        onError: Colors.white,
+        onError: AppColors.background,
       ),
       textTheme: _buildTextTheme(),
       appBarTheme: AppBarTheme(
-        backgroundColor: AppColors.surface,
+        backgroundColor: AppColors.background,
         elevation: 0,
-        scrolledUnderElevation: 0.5,
+        scrolledUnderElevation: 0,
         centerTitle: true,
         titleTextStyle: GoogleFonts.inter(
           fontSize: 18,
@@ -54,19 +67,18 @@ class AppTheme {
         color: AppColors.surface,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: const BorderSide(color: AppColors.divider, width: 0.5),
+          borderRadius: BorderRadius.circular(24),
         ),
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.accent,
-          foregroundColor: Colors.white,
+          foregroundColor: AppColors.textPrimary,
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
           ),
           textStyle: GoogleFonts.inter(
             fontSize: 16,
@@ -87,22 +99,22 @@ class AppTheme {
         filled: true,
         fillColor: AppColors.surfaceVariant,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.accent, width: 1.5),
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: AppColors.accent, width: 1),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: AppColors.error, width: 1),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         hintStyle: GoogleFonts.inter(
           fontSize: 16,
           color: AppColors.textTertiary,
@@ -110,8 +122,8 @@ class AppTheme {
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: AppColors.accent,
-        foregroundColor: Colors.white,
-        elevation: 2,
+        foregroundColor: AppColors.textPrimary,
+        elevation: 0,
         shape: CircleBorder(),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
@@ -127,9 +139,9 @@ class AppTheme {
         space: 1,
       ),
       snackBarTheme: SnackBarThemeData(
-        backgroundColor: AppColors.textPrimary,
-        contentTextStyle: GoogleFonts.inter(color: Colors.white, fontSize: 14),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        backgroundColor: AppColors.surfaceElevated,
+        contentTextStyle: GoogleFonts.inter(color: AppColors.textPrimary, fontSize: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         behavior: SnackBarBehavior.floating,
       ),
     );
